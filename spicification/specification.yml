@@ -466,24 +466,25 @@ components:
     RentalOffer:
       type: object
       required:
-        - name
+        - title
         - description
         - publicationDate
         - city
         - previewImage
-        - images
+        - mainImages
         - isPremium
         - isFavourite
         - rating
         - housingType
-        - rooms
-        - guests
+        - roomsCounter
+        - guestsCounter
         - rentalCost
         - amenities
-        - offerAuthor
-        - location
+        - userId
+        - commentsNumber
+        - coordinates
       properties:
-        name:
+        title:
           type: string
           minLength: 10
           maxLength: 100

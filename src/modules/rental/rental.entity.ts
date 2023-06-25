@@ -1,99 +1,66 @@
 import { defaultClasses, getModelForClass, modelOptions, prop, Ref } from '@typegoose/typegoose';
-import { Amenity, Cities, Coordinates, HouseType, MainImages, RentalOffer } from '../../types/rental-offer.js';
+
+import { Amenity, City, Coordinates, HouseType, MainImages } from '../../types/rental-offer.js';
 import { UserEntity } from '../user/user.entity.js';
+import {
+  MAX_RATING, MIN_RATING, OfferDescriptionLimit, OfferGuestsLimit, OfferPriceLimit, OfferRoomsLimit, OfferTitleLimit,
+} from '../../common/const.js';
+
 
 export interface RentalEntity extends defaultClasses.Base {}
 
 @modelOptions({
   schemaOptions: {
     collection: 'offers',
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
   }
 })
-export class RentalEntity extends defaultClasses.TimeStamps implements RentalOffer {
-  public id!: string;
-
-  @prop({
-    required: true,
-    minlength: 10,
-    maxlength: 100,
-    trim: true
-  })
+export class RentalEntity extends defaultClasses.TimeStamps {
+  @prop({required: true, trim: true, minlength: OfferTitleLimit.MIN, maxlength: OfferTitleLimit.MAX})
   public title!: string;
 
-  @prop({
-    required: true,
-    minlength: 20,
-    maxlength: 1024
-  })
+  @prop({required: true, minlength: OfferDescriptionLimit.MIN, maxlength: OfferDescriptionLimit.MAX})
   public description!: string;
 
-  @prop({
-    required: true
-  })
-  public city!: Cities;
+  @prop({enum: City, required: true})
+  public city!: City;
 
-  @prop({
-    required: true
-  })
+  @prop({required: true})
   public previewImage!: string;
 
-  @prop({
-    type: () => [String],
-    required: true
-  })
+  @prop({type: () => [String], required: true})
   public mainImages!: MainImages;
 
-  @prop({
-    required: true
-  })
+  @prop({required: true})
   public isPremium!: boolean;
 
-  @prop({
-    required: true
-  })
+  @prop({required: true})
   public isFavorite!: boolean;
 
-  @prop({
-    required: true
-  })
-  public type!: HouseType;
+  @prop({default: 0, min: MIN_RATING, max: MAX_RATING})
+  public rating!: number;
 
-  @prop({
-    required: true,
-    min: 1,
-    max: 8
-  })
+  @prop({required: true, enum: HouseType})
+  public housingType!: HouseType;
+
+  @prop({required: true, min: OfferRoomsLimit.MIN, max: OfferRoomsLimit.MAX})
   public roomsCounter!: number;
 
-  @prop({
-    required: true,
-    max: 10
-  })
+  @prop({required: true, min: OfferGuestsLimit.MIN, max: OfferGuestsLimit.MAX})
   public guestsCounter!: number;
 
-  @prop({
-    required: true,
-    min: 100,
-    max: 100000
-  })
-  public cost!: number;
+  @prop({required: true, min: OfferPriceLimit.MIN, max: OfferPriceLimit.MAX})
+  public rentalCost!: number;
 
-  @prop({
-    type: () => [String],
-    required: true
-  })
+  @prop({type: String, required: true, enum: Amenity})
   public amenities!: Amenity[];
 
-  @prop({
-    ref: UserEntity
-  })
+  @prop({required: true, ref: UserEntity})
   public userId!: Ref<UserEntity>;
 
-  @prop({
-    required: true
-  })
+  @prop({default: 0})
+  public commentsNumber!: number;
+
+  @prop({required: true})
   public coordinates!: Coordinates;
 }
 
