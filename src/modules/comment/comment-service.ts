@@ -2,7 +2,7 @@ import { CommentServiceInterface } from './comment-service.interface.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { CommentEntity } from './comment.entity.js';
 import CreateCommentDto from './dto/create-comment.dto.js';
-import { inject } from 'inversify';
+import {inject, injectable} from 'inversify';
 import { APPLICATION_DEPENDENCIES } from '../../types/application.dependencies.js';
 import { LoggerInterface } from '../../core/logger/logger.interface.js';
 import { UserEntity } from '../user/user.entity.js';
@@ -10,6 +10,7 @@ import { RentalEntity } from '../rental/rental.entity.js';
 import { getLimit } from '../../common/offers.js';
 import { MAX_RETURNED_COMMENTS } from '../../common/const.js';
 
+@injectable()
 export default class CommentService implements CommentServiceInterface {
   constructor(
     @inject(APPLICATION_DEPENDENCIES.LoggerInterface) private logger: LoggerInterface,

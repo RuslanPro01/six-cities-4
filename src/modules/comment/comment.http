@@ -1,0 +1,10 @@
+###
+POST http://localhost:3003/comments
+Content-Type: application/json
+
+{
+  "text": "Some test text!",
+  "rating": 4,
+  "userId": "649853b8ed9bb855f4b065d6",
+  "offerId": "649853b8ed9bb855f4b065d9"
+}
